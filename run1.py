@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 from simple_pid import PID
 import rospy, time
-import termios, sys, tty
 from std_msgs.msg import String, Int16, Int16MultiArray, Int32MultiArray, Int8
 import steering
 from modules.pid import PID

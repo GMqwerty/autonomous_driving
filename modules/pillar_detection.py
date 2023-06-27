@@ -3,10 +3,15 @@ import numpy as np
 import os 
 
 class PillarDetection:
-    def __init__(self, colors={"red":{"h":(170, 5), "s":(40, 200), "v":(90, 160), "num":1}, 
-                               "green":{"h":(65, 85), "s":(0, 255), "v":(0, 255), "num":-1}}, cnf="cnf.txt"):
+
+
+    def __init__(self, colors={"red":{"h":(173, 5), "s":(101, 255), "v":(50, 255), "num":1}, 
+                                "green":{"h":(69, 94), "s":(60, 255), "v":(50, 255), "num":-1}}, 
+                               min_area=800, max_height=400, cnf="cnf.txt"):
         self.cnf = cnf
         self.colors = colors
+        self.min_area = min_area
+        self.max_height = max_height
 
     def get_color_mask(self, color, image):
         hsv_range = self.colors[color]
@@ -24,8 +29,23 @@ class PillarDetection:
             im2 = cv2.inRange(imgHSV,lower,upper)
             im_or = cv2.bitwise_or(im1, im2)
             return im_or        
-    
-    def get_contours(self, image, mask, minArea=1000, sort= True, filter= 0,drawCon=True):
+        
+    def get_target(self, color, center, height, kc=0.7, kh=0.7, min_center=40):
+        center = (100 + center)/2
+        # print("Color:", color)
+        # print("Center:", center)
+        if color == 1 and center > min_center:
+            t = kc * center + (kh * 100 * height)/300
+            # print("t:", t)
+            return min(max(-100, int(t)), 100)
+        if color == -1 and center < 100 - min_center:
+            t = kc * center + (kh * 100 * height)/300
+            # print("t:", t)
+            return -1 * min(max(-100, int(t)), 100)
+        #     return -1 * min(max(-100, int(kc * (100 + center)/2 + (kh * 100 * height)/300)), 100)
+        return None
+        
+    def get_contours(self, image, mask, sort= True, filter= 0,drawCon=True):
         """
         Finds Contours in an image
 
@@ -35,6 +55,7 @@ class PillarDetection:
         :param sort: True will sort the contours by area (biggest first) 
         :param filter: Filters based on the corner points e.g. 4 = Rectangle or square
         :param drawCon: draw contours boolean
+        
         :return: Foudn contours with [contours, Area, BoundingBox]
         """
         conFound = []
@@ -48,7 +69,7 @@ class PillarDetection:
 
         for cnt in contours: 
             area = cv2.contourArea(cnt)
-            if area > minArea:
+            if area > self.min_area:
                 peri = cv2.arcLength(cnt,True)
                 approx = cv2.approxPolyDP(cnt, 0.02*peri, True)
                 #print(len(approx))
@@ -68,7 +89,7 @@ class PillarDetection:
         hmax = -1
         x = y = w = h = cx = cy = 0
         pillar_found = False
-        pillar_info = {"color":None, "height":0, "cx":0, "cy":0, "cerror":0}
+        pillar_info = {"color":0, "height":0, "cx":0, "cy":0, "center":0}
         for color in colors:
             color_mask = self.get_color_mask(color, image)
             img_contours, con_found = self.get_contours(image, color_mask)
@@ -82,12 +103,12 @@ class PillarDetection:
                     # print("x,y,w,h, cx, cy, color:", x,y,w,h, cx, cy, color)
                     hi, wi, ci = image.shape
                     ### Pid
-                    error = int(((cx - wi//2) * 100) / (wi/2))
+                    center = int((cx - wi/2) * 200/wi)
                     pillar_info["color"] = self.colors[color]["num"]
                     pillar_info["cx"] = cx
                     pillar_info["cy"] = cy
                     pillar_info["height"] = h
-                    pillar_info["cerror"] = error
+                    pillar_info["center"] = center
 
         
         if pillar_found and line:
@@ -98,23 +119,30 @@ class PillarDetection:
 def main():
     error = 0
     pillar_detection = PillarDetection()
-    folder = "Resources"
-    images = []
+
+    folder = os.path.join(os.getcwd(), "images_final")
+    
     for filename in os.listdir(folder):
         img = cv2.imread(os.path.join(folder,filename))
-        if img is not None:
-            images.append(img)
-    if images:
-        for image in images:
-            result_image, pillar_info = pillar_detection.detect_pillars(image, colors=["green", "red"], line=True, error=error)
-            cv2.imshow("Image",img)
+        if img is not None:  
+            result_image, pillar_info = pillar_detection.detect_pillars(img, colors=["green", "red"], 
+                                                                        line=True, error=error)
+            # cv2.imshow("Image",img)
             # cv2.imshow("Image Color",imgColor)
             cv2.imshow("Image Contours",result_image)
-            print("Pillar:", pillar_info)
-
-
+            print("Pillar from image :", filename, pillar_info)
+            print("Target:", pillar_detection.get_target(pillar_info["color"], 
+                                                         pillar_info["center"], 
+                                                         pillar_info["height"], 
+                                                         kc=1, kh=1, min_center=25))
             if cv2.waitKey(0) & 0xFF == ord('q'):
                 break
+            # print("Pillar from image :", filename, pillar_info)
+            
+            # k = input("Press any key to continue, 'q' to exit")
+            # if k == 'q':
+            #     break
+            
 
 if __name__ == "__main__":
     main()

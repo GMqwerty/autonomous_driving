@@ -9,7 +9,7 @@ distances_array = Int16MultiArray()
 def talker():
     distances = Distances()
     pub = rospy.Publisher('lrdistance', Int16MultiArray, queue_size=1)
-    rospy.init_node('distances', anonymous=True)
+    rospy.init_node('distances', anonymous=False)
     rate = rospy.Rate(50) 
     while not rospy.is_shutdown():
         distances_array.data = [distances.left(), distances.right()]        

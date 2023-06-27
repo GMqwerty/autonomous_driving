@@ -1,2 +1,2 @@
-{"data": "orange", "hmin": 161, "hmax": 169, "smin": 31, "smax": 116, "vmin": 41, "vmax": 101}
-{"data": "blue", "hmin": 58, "smin": 86, "vmin": 43, "hmax": 69, "smax": 100, "vmax": 89}
+{"data": "orange", "hmin": 19, "hmax": 32, "smin": 50, "smax": 150, "vmin": 70, "vmax": 150}
+{"data": "blue", "hmin": 85, "smin": 85, "vmin": 65, "hmax": 92, "smax": 108, "vmax": 87}

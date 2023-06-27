@@ -8,7 +8,7 @@ import RPi.GPIO as GPIO
 import VL53L1X
 
 class Distances:
-    def __init__(self, left_xshut=36, left_address=0x41, right_xshut=7, right_address=0x42, default_address=0x29):
+    def __init__(self, left_xshut=36, left_address=0x41, right_xshut=7, right_address=0x43, default_address=0x29):
         signal.signal(signal.SIGINT, self.exit_handler)
         # set xshut digital output pins
         GPIO.setmode(GPIO.BOARD)
@@ -31,7 +31,7 @@ class Distances:
         
         time.sleep(1)
         # set right sensor
-        GPIO.output(left_xshut, GPIO.LOW)
+        # GPIO.output(left_xshut, GPIO.LOW)
         GPIO.output(right_xshut, GPIO.HIGH)
         try:
 

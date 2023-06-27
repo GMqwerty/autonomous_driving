@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<launch>
+
+    <node pkg="carpkg" type="dc.py" name="dc_node">
+        
+    </node>
+
+    <node pkg="carpkg" type="drive_remotely.py" name="remote_node">
+        
+    </node>
+
+    
+    </node> -->
+</launch>

@@ -3,6 +3,12 @@ import time
 import serial
 import rospy
 from std_msgs.msg import Int32MultiArray, Int8, String
+import os
+
+cmd = 'sudo chmod 666 /dev/ttyTHS1'
+os.system(cmd)
+
+
 
 MAIN_ROT_TICKS = 400
 LEFT_ROT_TICKS = 40
@@ -20,7 +26,7 @@ serial_port = serial.Serial(
                 parity=serial.PARITY_NONE,
                 stopbits=serial.STOPBITS_ONE,
             )
-main_enc = left_enc = right_enc = ''
+main_enc = left_enc = right_enc = 0
 encoders_array = Int32MultiArray()
 # encoders_array.data_length = 3
 
@@ -77,16 +83,27 @@ def speed_callback(data):
     
 
 def talker():
-    pub = rospy.Publisher('encoders', Int32MultiArray, queue_size=10)
-    rospy.init_node('dc', anonymous=True)
-    rate = rospy.Rate(1) 
-    rospy.Subscriber("speed", String, speed_callback)
+    global serial_port, main_enc, left_enc, right_enc
 
+    pub = rospy.Publisher('encoders', Int32MultiArray, queue_size=10)
+    rospy.init_node('dc', anonymous=False)
+    rate = rospy.Rate(100) 
+    rospy.Subscriber("speed", String, speed_callback)
+    serial_port.write(0)
     while not rospy.is_shutdown():
-        # try:
-        read_encoders()
-        # except:
-        #     continue
+        try:
+            read_encoders()
+        except:
+            serial_port = serial.Serial(
+                port="/dev/ttyTHS1",
+                baudrate=115200,
+                bytesize=serial.EIGHTBITS,
+                parity=serial.PARITY_NONE,
+                stopbits=serial.STOPBITS_ONE,
+            )
+            main_enc = left_enc = right_enc = 0
+            time.sleep(0.5)
+            continue
         # read_encoders_fake()
         encoders_array.data = [left_enc, main_enc, right_enc]
         rospy.loginfo(str(encoders_array.data))

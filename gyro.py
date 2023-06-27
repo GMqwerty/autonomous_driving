@@ -5,6 +5,7 @@ from std_msgs.msg import Int16
 import math
 import time
 
+time.sleep(5)
 t0 = time.time()
 start_bool = False # boolean for connection
 while (time.time()-t0)<5: # wait for 5-sec to connect to IMU
@@ -23,7 +24,7 @@ def talker():
     global z_offset
 
     pub = rospy.Publisher('gyro_angle', Int16, queue_size=10)
-    rospy.init_node('gyro', anonymous=True)
+    rospy.init_node('gyro', anonymous=False)
     rate = rospy.Rate(100) 
     
     previous_time = time.time() * 1000

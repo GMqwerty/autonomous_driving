@@ -1,5 +1,10 @@
-/__pycache__/**
-/.vscode/**
-/images/**
-/modules/__pycache__/**
-/modules/Resources/**
+/__pycache__/*
+/.vscode/*
+/images/*
+/images_final/*
+/images_1/*
+/images_13_6_23/*
+/images_15_6_23/*
+/modules/Resources/*
+/vasiis/*
+.gitignore

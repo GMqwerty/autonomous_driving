@@ -127,7 +127,7 @@ class Color:
                         orange["max"][1] = hsv[1]
                     if hsv[2] > orange["max"][2]:
                         orange["max"][2] = hsv[2]
-                time.sleep(0.2)
+                time.sleep(0.5)
             print("Orange:", orange)
             print("Push 's' if sensor is above blue line, 'q' to stop")
             time.sleep(3)
@@ -149,7 +149,7 @@ class Color:
                         blue["max"][1] = hsv[1]
                     if hsv[2] > blue["max"][2]:
                         blue["max"][2] = hsv[2]
-                time.sleep(0.2)
+                time.sleep(0.5)
 
             print("Orange:", orange)
             print("Blue:", blue)
@@ -168,11 +168,12 @@ class Color:
 
 def main():
     color = Color()
-    color.calibrate()
+    # color.calibrate()
     while True:
         line = color.detect_line() 
-        if line != 0:
-            print(line)
+        # if line != 0:S
+        print(line)
+        time.sleep(0.02)
 
 if __name__ == "__main__":
     main()
