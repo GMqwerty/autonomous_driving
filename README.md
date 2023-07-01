@@ -1,10 +1,10 @@
-# autonomous_driving
+# Autonomous Driving
 
 ## Introduction
 This repository is about the robot we made for the WRO Future Engineers competition in the 2023 season. Here, we are going to explain in detail how the robot operates and we will also go through the general structure of our code.
 
 ## Mechanical parts
-The vehicle itself is mostly consisted out of LEGOs, but some parts had to be 3D printed, in order for us to connect the sensors and the motors onto the robot. Photos of the vehicle can be found in the "Vehicle's Photos" folder inside the main branch
+The vehicle itself is mostly consisted out of LEGOs, but some parts had to be 3D printed, in order for us to connect the sensors and the motors onto the robot. Photos of the vehicle can be found in the "Vehicle Photos" folder inside the main branch
 ### Sensors
 We used:
 - 2 distance sensors
@@ -28,6 +28,8 @@ For this mission, the launch file runs the following nodes:
 #### Basic algorythm for the first mission
 When the first mission  starts, the robot vehicle starts going straight. In order to do that we have the gyro node which uses the gyroscope to calculate the deviation from the target and then the run1 node corrects the servo motor according to that information so that he robot is always going straight. If the distance sensors detect a big gap on the right or on the left of the vehicle, the target changes accordingly so that the robot turns 90 degrees to continue the round. This happens 12 more times which is 3 rounds. When the vehicle detects a gap for the 13th time, it starts going backwards in order to park where it started.
 
+There are also some scripts privided in the main branch where we can see how the code for run1 looked like at given points in time.
+
 Video of the robot completing the first mission can be found here: https://youtu.be/2mD64tW20yI
 
 ### Second mission 
@@ -38,6 +40,8 @@ This run has the same nodes runing, with some additional ones:
   
 #### Basic algorythm for the second mission
 The algorythm for the second mission is the same as the one for the first on, but here we also have to avoid red and green traffic signs. Using image processing library OpenCV, we are able to detect traffic signs in the camera feed. Additional processing of the image provides us with further information about the pillar, such as its color and its distance from our vehicle. Using different parameters we are able to identify which traffic signs we need to focus on avoiding. For example, traffic signs which are far away, or already on the correct side of the vehicle can be safely ignored. If a traffic sign is on the wrong side of the vehicle, the robot starts steering to avoid it. The steering angle is determined by how much the vehicle has to move to pass it from the correct side. The robot keeps record of all the traffic signs it has seen, so at the end of the second round it checks whether the last traffic sing it encountered was red, so that it can turn back to go through the last round the opposite direction. Otherwise, it keeps its direction the same and finishes normally.
+
+Just like in run1, there are a couple of scripts in the master branch which show how the code for run2 looked like a week ago.
 
 Video of the robot completing the second mission can be found here: https://youtu.be/rZwB47i2jOo
 
