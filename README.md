@@ -1,4 +1,4 @@
-# autonomous_drivinγ
+# autonomous_driving
 
 ## Introduction
 This repository is about the robot we made for the WRO Future Engineers competition in the season 2023. Here, we are going to explain in detail how the robot operates and we will also go through the general structure of our code.
