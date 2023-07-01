@@ -41,6 +41,9 @@ The algorythm for the second mission is the same as the one for the first on, bu
 
 Video of the robot completing the second mission can be found here: https://youtu.be/rZwB47i2jOo
 
+## How to start the robot
+It is not that dificult to start the vehicle and we can easily describe the proccess to do so. First of all, we have to turn on the robot and connetct to it with the help of the Visual Studio extension that allows us to change remotelly the contents of our scripts. That way, we can change the launch file that runs on boot to be either for the first or the second mission. After that, we can shut down the system and turn off the power on our vehicle. Then we can only turn it on after we have placed it at the starting position. At this stage, it is crucial that we do not move the robot because the gyroscope will not be able to callibrate properly. If everything is done correctly, about 40 to 45 seconds after the boot a green light will indicate that we are ready to start. So all we have to do now, is to push the button in order for the vehicle to start moving forward.
+
 
 
 
