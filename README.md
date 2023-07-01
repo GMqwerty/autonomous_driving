@@ -26,6 +26,9 @@ In this run, the launch file runs the following nodes:
 #### Basic algorythm for Run1
 When run1 starts, the robot vehicle starts going straight. In order to do that we have the gyro node which uses the gyroscope to calculate the deviation from the target and then the run1 node corrects the servo motor according to that information so that he robot always goes straight. If the distance sensors detect a big gap on the right or on the left of the vehicle, the target changes accordingly so that the robot turns 90 degrees to continue the round. This happens 12 more times which is 3 rounds. When the vehicle detects a gap for the 13th time, it starts going backwards in order to park where it started.
 
+Video of the robot completing run1 can be found here: https://youtu.be/2mD64tW20yI
+
+
 
 
 
